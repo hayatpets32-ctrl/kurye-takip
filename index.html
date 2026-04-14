@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#0f1117" />
+  <meta name="theme-color" content="#0b0c10" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -25,684 +25,757 @@
       --text: #e8eaf0;
       --muted: #6b7280;
       --danger: #ef4444;
+      --success: #22c55e;
       --radius: 14px;
       --font-display: 'Bebas Neue', sans-serif;
       --font-body: 'DM Sans', sans-serif;
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100dvh; overscroll-behavior: none; }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      min-height: 100dvh;
-      overscroll-behavior: none;
-    }
+    /* ── SCREEN SYSTEM ── */
+    .screen { display: none; min-height: 100dvh; }
+    .screen.active { display: flex; flex-direction: column; }
 
-    /* ── HEADER ── */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(11,12,16,0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 16px;
-      height: 60px;
-      display: flex;
+    /* ══════════════════════════════════
+       LOGIN SCREEN
+    ══════════════════════════════════ */
+    #screen-login {
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      padding: 24px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(245,166,35,.12) 0%, transparent 70%), var(--bg);
     }
-
-    .logo {
+    .login-box {
+      width: 100%;
+      max-width: 380px;
+    }
+    .login-logo {
       font-family: var(--font-display);
-      font-size: 28px;
-      letter-spacing: 2px;
+      font-size: 48px;
+      letter-spacing: 3px;
+      text-align: center;
+      margin-bottom: 4px;
       background: linear-gradient(90deg, var(--accent), #fbbf24);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
-    .logo span {
-      -webkit-text-fill-color: var(--muted);
+    .login-sub {
+      text-align: center;
       color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 36px;
     }
-
-    .header-date {
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 500;
-      text-align: right;
-    }
-
-    /* ── NAV TABS ── */
-    .tabs {
-      display: flex;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .tabs::-webkit-scrollbar { display: none; }
-
-    .tab-btn {
-      flex: 1;
-      min-width: 90px;
-      padding: 12px 8px;
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-family: var(--font-body);
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all .2s;
-      white-space: nowrap;
-    }
-    .tab-btn.active {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
-
-    /* ── MAIN ── */
-    main { padding: 16px; max-width: 600px; margin: 0 auto; padding-bottom: 100px; }
-
-    /* ── CARD ── */
-    .card {
+    .login-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 16px;
+      border-radius: 20px;
+      padding: 28px 24px;
     }
-
-    .card-title {
+    .login-card h2 {
       font-family: var(--font-display);
-      font-size: 20px;
+      font-size: 22px;
       letter-spacing: 1px;
-      margin-bottom: 16px;
-      color: var(--text);
+      margin-bottom: 20px;
     }
-
-    /* ── FORM ── */
     .form-row { margin-bottom: 14px; }
-
-    label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--muted);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: .8px;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="date"],
-    select {
-      width: 100%;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 15px;
-      outline: none;
-      transition: border-color .2s;
-      -webkit-appearance: none;
+    label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .8px; }
+    input[type="text"], input[type="password"], input[type="number"], input[type="date"], select {
+      width: 100%; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 14px; color: var(--text);
+      font-family: var(--font-body); font-size: 15px; outline: none;
+      transition: border-color .2s; -webkit-appearance: none;
     }
     input:focus, select:focus { border-color: var(--accent); }
-
-    .amount-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .amount-box {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      position: relative;
-      transition: border-color .2s;
-    }
-    .amount-box.nakit { border-color: rgba(245,166,35,.25); }
-    .amount-box.pos { border-color: rgba(34,211,165,.25); }
-    .amount-box label {
-      font-size: 11px;
-      margin-bottom: 4px;
-    }
-    .amount-box.nakit label { color: var(--nakit); }
-    .amount-box.pos label { color: var(--pos); }
-    .amount-box input {
-      background: transparent;
-      border: none;
-      padding: 0;
-      font-size: 20px;
-      font-weight: 600;
-      width: 100%;
-    }
-    .amount-box input:focus { border: none; }
-    .currency-tag {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-    }
+    .login-error { color: var(--danger); font-size: 13px; text-align: center; margin-top: 10px; min-height: 18px; }
 
     /* ── BUTTON ── */
     .btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      font-family: var(--font-display);
-      font-size: 18px;
-      letter-spacing: 1.5px;
-      cursor: pointer;
-      transition: transform .15s, opacity .15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 14px; border: none; border-radius: 10px;
+      font-family: var(--font-display); font-size: 18px; letter-spacing: 1.5px;
+      cursor: pointer; transition: transform .15s, opacity .15s;
     }
     .btn:active { transform: scale(.97); opacity: .85; }
     .btn-primary { background: linear-gradient(135deg, var(--accent), #fbbf24); color: #0b0c10; }
-    .btn-danger { background: rgba(239,68,68,.15); color: var(--danger); border: 1px solid rgba(239,68,68,.3); font-family: var(--font-body); font-size: 13px; padding: 8px 12px; width: auto; }
+    .btn-danger { background: rgba(239,68,68,.12); color: var(--danger); border: 1px solid rgba(239,68,68,.3); font-family: var(--font-body); font-size: 13px; padding: 8px 12px; width: auto; border-radius: 8px; }
+    .btn-ghost { background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: var(--font-body); font-size: 13px; padding: 8px 14px; width: auto; border-radius: 8px; font-size: 14px; letter-spacing: 0; }
+    .btn-success { background: rgba(34,197,94,.15); color: var(--success); border: 1px solid rgba(34,197,94,.3); font-family: var(--font-body); font-size: 13px; padding: 8px 14px; width: auto; border-radius: 8px; letter-spacing: 0; }
+    .btn-sm { padding: 7px 12px; font-size: 13px; font-family: var(--font-body); letter-spacing: 0; width: auto; border-radius: 8px; }
+
+    /* ══════════════════════════════════
+       SHARED APP LAYOUT
+    ══════════════════════════════════ */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(11,12,16,0.9); backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border);
+      padding: 0 16px; height: 60px; display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .logo { font-family: var(--font-display); font-size: 26px; letter-spacing: 2px; background: linear-gradient(90deg, var(--accent), #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .user-badge { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .logout-btn { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: var(--font-body); transition: all .2s; }
+    .logout-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+    .tabs { display: flex; background: var(--surface); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab-btn { flex: 1; min-width: 80px; padding: 12px 8px; background: none; border: none; color: var(--muted); font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; white-space: nowrap; }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    main { padding: 16px; max-width: 640px; width: 100%; margin: 0 auto; padding-bottom: 40px; flex: 1; overflow-y: auto; }
+
+    /* ── CARD ── */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+    .card-title { font-family: var(--font-display); font-size: 20px; letter-spacing: 1px; margin-bottom: 16px; }
+
+    /* ── AMOUNT ROW ── */
+    .amount-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .amount-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; position: relative; }
+    .amount-box.nakit { border-color: rgba(245,166,35,.25); }
+    .amount-box.pos { border-color: rgba(34,211,165,.25); }
+    .amount-box label { font-size: 11px; margin-bottom: 4px; }
+    .amount-box.nakit label { color: var(--nakit); }
+    .amount-box.pos label { color: var(--pos); }
+    .amount-box input { background: transparent; border: none; padding: 0; font-size: 20px; font-weight: 600; width: 100%; }
+    .amount-box input:focus { border: none; }
+    .currency-tag { position: absolute; top: 12px; right: 12px; font-size: 11px; font-weight: 600; color: var(--muted); }
 
     /* ── SUMMARY CHIPS ── */
-    .summary-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .chip {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 12px;
-      text-align: center;
-    }
+    .summary-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .chip { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 12px; text-align: center; }
     .chip-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 6px; }
-    .chip-value { font-family: var(--font-display); font-size: 22px; letter-spacing: .5px; }
+    .chip-value { font-family: var(--font-display); font-size: 20px; letter-spacing: .5px; }
     .chip.nakit .chip-value { color: var(--nakit); }
     .chip.pos .chip-value { color: var(--pos); }
-    .chip.total .chip-value { color: var(--text); }
 
     /* ── ENTRY LIST ── */
     .entry-list { display: flex; flex-direction: column; gap: 10px; }
-
-    .entry-item {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      animation: fadeUp .3s ease;
-    }
-
-    @keyframes fadeUp {
-      from { opacity:0; transform: translateY(8px); }
-      to   { opacity:1; transform: translateY(0); }
-    }
-
-    .entry-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent), #fbbf24);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-display);
-      font-size: 18px;
-      color: #0b0c10;
-      flex-shrink: 0;
-    }
-
+    .entry-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; animation: fadeUp .3s ease; }
+    @keyframes fadeUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+    .entry-avatar { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), #fbbf24); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 18px; color: #0b0c10; flex-shrink: 0; }
     .entry-info { flex: 1; min-width: 0; }
     .entry-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .entry-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
-
     .entry-amounts { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
-    .tag {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 13px;
-      font-weight: 600;
-    }
+    .tag { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; }
     .tag.nakit { color: var(--nakit); }
     .tag.pos { color: var(--pos); }
     .tag-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
     .tag.nakit .tag-dot { background: var(--nakit); }
     .tag.pos .tag-dot { background: var(--pos); }
 
-    /* ── EMPTY STATE ── */
-    .empty {
-      text-align: center;
-      padding: 48px 24px;
-      color: var(--muted);
-    }
+    /* ── EMPTY ── */
+    .empty { text-align: center; padding: 48px 24px; color: var(--muted); }
     .empty-icon { font-size: 48px; margin-bottom: 12px; }
-    .empty-text { font-size: 15px; }
 
     /* ── FILTER BAR ── */
-    .filter-bar {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-      align-items: center;
-    }
-    .filter-bar input, .filter-bar select {
-      flex: 1;
-      padding: 10px 12px;
-      font-size: 14px;
-    }
+    .filter-bar { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+    .filter-bar input, .filter-bar select { flex: 1; min-width: 120px; padding: 10px 12px; font-size: 14px; }
 
-    /* ── TOAST ── */
-    #toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--accent);
-      color: #0b0c10;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-weight: 600;
-      font-size: 14px;
-      z-index: 999;
-      transition: transform .3s cubic-bezier(.34,1.56,.64,1), opacity .3s;
-      opacity: 0;
-      white-space: nowrap;
-    }
-    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    /* ── ADMIN USER TABLE ── */
+    .user-row { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+    .user-row-info { flex: 1; }
+    .user-row-name { font-weight: 600; font-size: 14px; }
+    .user-row-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .user-row-actions { display: flex; gap: 8px; }
+    .role-badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+    .role-badge.admin { background: rgba(59,130,246,.15); color: var(--accent2); border: 1px solid rgba(59,130,246,.3); }
+    .role-badge.kurye { background: rgba(245,166,35,.12); color: var(--accent); border: 1px solid rgba(245,166,35,.3); }
 
-    /* ── BOTTOM SAFE ── */
-    .bottom-safe { height: env(safe-area-inset-bottom, 20px); }
+    /* ── MODAL ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .2s; }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 24px; width: 100%; max-width: 400px; transform: translateY(20px); transition: transform .25s; }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-title { font-family: var(--font-display); font-size: 22px; letter-spacing: 1px; margin-bottom: 20px; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
 
     /* ── REPORT ── */
     .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .report-card {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-    }
+    .report-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
     .report-card-label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 8px; }
-    .report-card-value { font-family: var(--font-display); font-size: 28px; letter-spacing: .5px; }
+    .report-card-value { font-family: var(--font-display); font-size: 26px; letter-spacing: .5px; }
     .report-card.nakit .report-card-value { color: var(--nakit); }
     .report-card.pos .report-card-value { color: var(--pos); }
     .report-card.total { grid-column: 1/-1; }
-    .report-card.total .report-card-value { font-size: 36px; color: var(--text); }
+    .report-card.total .report-card-value { font-size: 32px; }
+    .section-heading { font-family: var(--font-display); font-size: 15px; letter-spacing: 1px; color: var(--muted); margin: 18px 0 10px; text-transform: uppercase; }
+    .courier-row { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .courier-row-amounts { display: flex; gap: 14px; }
 
-    .section-heading {
-      font-family: var(--font-display);
-      font-size: 16px;
-      letter-spacing: 1px;
-      color: var(--muted);
-      margin: 20px 0 10px;
-      text-transform: uppercase;
-    }
+    /* ── PAGE TABS ── */
+    .page { display: none; }
+    .page.active { display: block; }
 
-    /* ── COURIER TABLE ── */
-    .courier-row {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .courier-row-name { font-weight: 600; font-size: 14px; }
-    .courier-row-amounts { display: flex; gap: 16px; }
+    /* ── TOAST ── */
+    #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--accent); color: #0b0c10; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 14px; z-index: 999; transition: transform .3s cubic-bezier(.34,1.56,.64,1), opacity .3s; opacity: 0; white-space: nowrap; pointer-events: none; }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    #toast.error { background: var(--danger); color: #fff; }
 
-    /* SCROLLBAR */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-    /* PAGE VISIBILITY */
-    .page { display: none; }
-    .page.active { display: block; }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">Kurye<span>Takip</span></div>
-  <div class="header-date" id="headerDate"></div>
-</header>
-
-<div class="tabs">
-  <button class="tab-btn active" onclick="switchTab('giris')">Giriş Yap</button>
-  <button class="tab-btn" onclick="switchTab('kayitlar')">Kayıtlar</button>
-  <button class="tab-btn" onclick="switchTab('rapor')">Rapor</button>
+<!-- ══════════════════════════════════
+     LOGIN SCREEN
+══════════════════════════════════ -->
+<div class="screen active" id="screen-login">
+  <div class="login-box">
+    <div class="login-logo">KuryeTakip</div>
+    <div class="login-sub">Motorlu Kurye Tahsilat Sistemi</div>
+    <div class="login-card">
+      <h2>Giriş Yap</h2>
+      <div class="form-row">
+        <label>Kullanıcı Adı</label>
+        <input type="text" id="loginUser" placeholder="kullanici_adi" autocomplete="username" autocapitalize="none" />
+      </div>
+      <div class="form-row">
+        <label>Şifre</label>
+        <input type="password" id="loginPass" placeholder="••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" />
+      </div>
+      <button class="btn btn-primary" onclick="doLogin()">GİRİŞ YAP</button>
+      <div class="login-error" id="loginError"></div>
+    </div>
+  </div>
 </div>
 
-<main>
-
-  <!-- ── GİRİŞ SAYFASI ── -->
-  <div class="page active" id="page-giris">
-
-    <div class="card">
-      <div class="card-title">Günlük Tahsilat Girişi</div>
-
-      <div class="form-row">
-        <label>Kurye Adı</label>
-        <input type="text" id="kuryeAdi" placeholder="Ad Soyad" autocomplete="off" />
-      </div>
-
-      <div class="form-row">
-        <label>Tarih</label>
-        <input type="date" id="tarih" />
-      </div>
-
-      <div class="form-row">
-        <label>Tahsilat Tutarları</label>
-        <div class="amount-row">
-          <div class="amount-box nakit">
-            <label>Nakit</label>
-            <input type="number" id="nakit" placeholder="0" min="0" inputmode="decimal" />
-            <span class="currency-tag">₺</span>
+<!-- ══════════════════════════════════
+     KURYE APP SCREEN
+══════════════════════════════════ -->
+<div class="screen" id="screen-kurye">
+  <header>
+    <div class="logo">KuryeTakip</div>
+    <div class="header-right">
+      <div class="user-badge" id="kurye-username-badge"></div>
+      <button class="logout-btn" onclick="doLogout()">Çıkış</button>
+    </div>
+  </header>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchKuryeTab('giris', this)">Giriş Yap</button>
+    <button class="tab-btn" onclick="switchKuryeTab('gecmis', this)">Geçmişim</button>
+  </div>
+  <main>
+    <!-- Giriş -->
+    <div class="page active" id="kurye-page-giris">
+      <div class="card">
+        <div class="card-title">Günlük Tahsilat Girişi</div>
+        <div class="form-row">
+          <label>Tarih</label>
+          <input type="date" id="k-tarih" />
+        </div>
+        <div class="form-row">
+          <label>Tahsilat Tutarları</label>
+          <div class="amount-row">
+            <div class="amount-box nakit">
+              <label>Nakit</label>
+              <input type="number" id="k-nakit" placeholder="0" min="0" inputmode="decimal" />
+              <span class="currency-tag">₺</span>
+            </div>
+            <div class="amount-box pos">
+              <label>POS</label>
+              <input type="number" id="k-pos" placeholder="0" min="0" inputmode="decimal" />
+              <span class="currency-tag">₺</span>
+            </div>
           </div>
-          <div class="amount-box pos">
-            <label>POS</label>
-            <input type="number" id="pos" placeholder="0" min="0" inputmode="decimal" />
-            <span class="currency-tag">₺</span>
-          </div>
         </div>
+        <div class="form-row">
+          <label>Not (Opsiyonel)</label>
+          <input type="text" id="k-not" placeholder="Açıklama..." />
+        </div>
+        <button class="btn btn-primary" onclick="kuryeKaydet()">KAYDET</button>
       </div>
-
-      <div class="form-row">
-        <label>Not (Opsiyonel)</label>
-        <input type="text" id="not" placeholder="Açıklama..." autocomplete="off" />
-      </div>
-
-      <button class="btn btn-primary" onclick="kayitEkle()">KAYDET</button>
-    </div>
-
-    <!-- Bugünün Özeti -->
-    <div class="card">
-      <div class="card-title">Bugünün Özeti</div>
-      <div class="summary-row" id="bugunOzet">
-        <div class="chip nakit">
-          <div class="chip-label">Nakit</div>
-          <div class="chip-value" id="bugunNakit">0 ₺</div>
-        </div>
-        <div class="chip pos">
-          <div class="chip-label">POS</div>
-          <div class="chip-value" id="bugunPos">0 ₺</div>
-        </div>
-        <div class="chip total">
-          <div class="chip-label">Toplam</div>
-          <div class="chip-value" id="bugunToplam">0 ₺</div>
+      <div class="card">
+        <div class="card-title">Bugünün Özeti</div>
+        <div class="summary-row">
+          <div class="chip nakit"><div class="chip-label">Nakit</div><div class="chip-value" id="k-bugun-nakit">0 ₺</div></div>
+          <div class="chip pos"><div class="chip-label">POS</div><div class="chip-value" id="k-bugun-pos">0 ₺</div></div>
+          <div class="chip"><div class="chip-label">Toplam</div><div class="chip-value" id="k-bugun-toplam">0 ₺</div></div>
         </div>
       </div>
     </div>
 
+    <!-- Geçmiş -->
+    <div class="page" id="kurye-page-gecmis">
+      <div class="filter-bar">
+        <input type="date" id="k-filtre-tarih" onchange="renderKuryeGecmis()" />
+        <button class="btn-ghost btn" onclick="$('k-filtre-tarih').value=''; renderKuryeGecmis()">Tümü</button>
+      </div>
+      <div id="kurye-gecmis-list" class="entry-list"></div>
+    </div>
+  </main>
+</div>
+
+<!-- ══════════════════════════════════
+     ADMIN APP SCREEN
+══════════════════════════════════ -->
+<div class="screen" id="screen-admin">
+  <header>
+    <div class="logo">KuryeTakip <span style="font-size:14px;color:var(--accent2);font-family:var(--font-body);font-weight:600;letter-spacing:1px;">YÖNETİCİ</span></div>
+    <div class="header-right">
+      <button class="logout-btn" onclick="doLogout()">Çıkış</button>
+    </div>
+  </header>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchAdminTab('rapor', this)">Rapor</button>
+    <button class="tab-btn" onclick="switchAdminTab('kayitlar', this)">Tüm Kayıtlar</button>
+    <button class="tab-btn" onclick="switchAdminTab('kullanicilar', this)">Kullanıcılar</button>
   </div>
+  <main>
 
-  <!-- ── KAYITLAR SAYFASI ── -->
-  <div class="page" id="page-kayitlar">
-
-    <div class="filter-bar">
-      <input type="text" id="aramaInput" placeholder="Kurye ara..." oninput="renderKayitlar()" />
-      <input type="date" id="filtreTarih" onchange="renderKayitlar()" />
-    </div>
-
-    <div id="kayitListesi" class="entry-list"></div>
-
-  </div>
-
-  <!-- ── RAPOR SAYFASI ── -->
-  <div class="page" id="page-rapor">
-
-    <div class="card">
-      <div class="card-title">Dönem Seç</div>
-      <div class="filter-bar" style="margin-bottom:0">
-        <input type="date" id="raporBaslangic" />
-        <span style="color:var(--muted);font-size:13px;">—</span>
-        <input type="date" id="raporBitis" />
-        <button class="btn btn-primary" style="width:auto;padding:10px 18px;font-size:15px;" onclick="renderRapor()">Getir</button>
+    <!-- RAPOR -->
+    <div class="page active" id="admin-page-rapor">
+      <div class="card">
+        <div class="card-title">Dönem & Kurye Filtresi</div>
+        <div class="filter-bar" style="margin-bottom:10px">
+          <input type="date" id="a-rapor-bas" />
+          <span style="color:var(--muted);font-size:13px;">—</span>
+          <input type="date" id="a-rapor-bit" />
+        </div>
+        <div class="filter-bar" style="margin-bottom:0">
+          <select id="a-rapor-kurye">
+            <option value="">Tüm Kuryeler</option>
+          </select>
+          <button class="btn btn-primary" style="width:auto;padding:10px 20px;font-size:16px;" onclick="renderAdminRapor()">Getir</button>
+        </div>
       </div>
+      <div id="admin-rapor-icerik"></div>
     </div>
 
-    <div id="raporIcerik"></div>
+    <!-- TÜM KAYITLAR -->
+    <div class="page" id="admin-page-kayitlar">
+      <div class="filter-bar">
+        <input type="text" id="a-arama" placeholder="Kurye ara..." oninput="renderAdminKayitlar()" />
+        <input type="date" id="a-filtre-tarih" onchange="renderAdminKayitlar()" />
+      </div>
+      <div id="admin-kayit-list" class="entry-list"></div>
+    </div>
 
+    <!-- KULLANICILAR -->
+    <div class="page" id="admin-page-kullanicilar">
+      <button class="btn btn-primary" style="margin-bottom:16px" onclick="openUserModal()">+ YENİ KULLANICI EKLE</button>
+      <div id="kullanici-list"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══════════════════════════════════
+     KULLANICI MODAL
+══════════════════════════════════ -->
+<div class="modal-overlay" id="user-modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Yeni Kullanıcı</div>
+    <div class="form-row">
+      <label>Ad Soyad</label>
+      <input type="text" id="m-adSoyad" placeholder="Ali Yılmaz" />
+    </div>
+    <div class="form-row">
+      <label>Kullanıcı Adı</label>
+      <input type="text" id="m-username" placeholder="ali_yilmaz" autocapitalize="none" />
+    </div>
+    <div class="form-row">
+      <label>Şifre</label>
+      <input type="password" id="m-sifre" placeholder="En az 4 karakter" />
+    </div>
+    <div class="form-row">
+      <label>Rol</label>
+      <select id="m-rol">
+        <option value="kurye">Kurye</option>
+        <option value="admin">Yönetici</option>
+      </select>
+    </div>
+    <div class="login-error" id="modal-error"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" style="flex:1" onclick="saveUser()">KAYDET</button>
+      <button class="btn btn-ghost" onclick="closeUserModal()">İptal</button>
+    </div>
   </div>
+</div>
 
-</main>
+<!-- ── ŞIFRE DEĞİŞTİR MODAL ── -->
+<div class="modal-overlay" id="pass-modal">
+  <div class="modal">
+    <div class="modal-title">Şifre Değiştir</div>
+    <div class="form-row">
+      <label>Yeni Şifre</label>
+      <input type="password" id="pm-sifre" placeholder="En az 4 karakter" />
+    </div>
+    <div class="login-error" id="pass-modal-error"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" style="flex:1" onclick="savePass()">KAYDET</button>
+      <button class="btn btn-ghost" onclick="closePassModal()">İptal</button>
+    </div>
+  </div>
+</div>
 
 <div id="toast"></div>
-<div class="bottom-safe"></div>
 
 <script>
-  // ── UTILS ──
-  const $ = id => document.getElementById(id);
-  const fmt = n => Number(n || 0).toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' ₺';
+// ══════════════════════════════════
+// STORAGE HELPERS
+// ══════════════════════════════════
+const USERS_KEY   = 'kt_users_v1';
+const RECORDS_KEY = 'kt_records_v1';
 
-  // ── STORAGE ──
-  const STORE_KEY = 'kurye_kayitlar_v1';
-  function getKayitlar() {
-    try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch { return []; }
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch { return []; }
+}
+function saveUsers(u) { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
+
+function getRecords() {
+  try { return JSON.parse(localStorage.getItem(RECORDS_KEY) || '[]'); } catch { return []; }
+}
+function saveRecords(r) { localStorage.setItem(RECORDS_KEY, JSON.stringify(r)); }
+
+// ── DEFAULT ADMIN ──
+function ensureAdmin() {
+  const users = getUsers();
+  if (!users.find(u => u.username === 'admin')) {
+    users.unshift({ id: 1, adSoyad: 'Yönetici', username: 'admin', password: 'admin123', role: 'admin' });
+    saveUsers(users);
   }
-  function saveKayitlar(list) {
-    localStorage.setItem(STORE_KEY, JSON.stringify(list));
+}
+
+// ══════════════════════════════════
+// SESSION
+// ══════════════════════════════════
+let currentUser = null;
+
+function doLogin() {
+  const u = $v('loginUser').trim().toLowerCase();
+  const p = $v('loginPass');
+  $('loginError').textContent = '';
+
+  ensureAdmin();
+  const users = getUsers();
+  const found = users.find(x => x.username.toLowerCase() === u && x.password === p);
+  if (!found) { $('loginError').textContent = 'Kullanıcı adı veya şifre hatalı.'; return; }
+
+  currentUser = found;
+  $('loginUser').value = '';
+  $('loginPass').value = '';
+
+  if (found.role === 'admin') showScreen('admin');
+  else showScreen('kurye');
+}
+
+function doLogout() {
+  currentUser = null;
+  showScreen('login');
+}
+
+// ══════════════════════════════════
+// SCREEN ROUTING
+// ══════════════════════════════════
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $('screen-' + name).classList.add('active');
+
+  if (name === 'kurye') {
+    $('kurye-username-badge').textContent = currentUser.adSoyad;
+    $('k-tarih').value = todayStr();
+    renderKuryeBugun();
+    renderKuryeGecmis();
+    switchKuryeTab('giris', document.querySelector('#screen-kurye .tab-btn'));
   }
-
-  // ── TARIH ──
-  function bugunStr() {
-    return new Date().toISOString().split('T')[0];
+  if (name === 'admin') {
+    fillKuryeSelect();
+    setDefaultRaporDates();
+    renderAdminRapor();
+    renderAdminKayitlar();
+    renderKullanicilar();
   }
-  function formatTarih(d) {
-    if (!d) return '';
-    const [y, m, g] = d.split('-');
-    return `${g}.${m}.${y}`;
-  }
+}
 
-  // ── HEADER ──
-  function updateHeaderDate() {
-    const now = new Date();
-    const options = { weekday: 'short', day: 'numeric', month: 'short' };
-    $('headerDate').innerHTML = now.toLocaleDateString('tr-TR', options);
-  }
+// ══════════════════════════════════
+// TAB SWITCHING
+// ══════════════════════════════════
+function switchKuryeTab(tab, btn) {
+  document.querySelectorAll('#screen-kurye .page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#screen-kurye .tab-btn').forEach(b => b.classList.remove('active'));
+  $('kurye-page-' + tab).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (tab === 'gecmis') renderKuryeGecmis();
+}
 
-  // ── INIT ──
-  window.onload = () => {
-    $('tarih').value = bugunStr();
-    const today = bugunStr();
-    $('filtreTarih').value = today;
-    // Rapor default son 7 gün
-    const raporBitis = new Date();
-    const raporBaslangic = new Date();
-    raporBaslangic.setDate(raporBaslangic.getDate() - 6);
-    $('raporBitis').value = raporBitis.toISOString().split('T')[0];
-    $('raporBaslangic').value = raporBaslangic.toISOString().split('T')[0];
+function switchAdminTab(tab, btn) {
+  document.querySelectorAll('#screen-admin .page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#screen-admin .tab-btn').forEach(b => b.classList.remove('active'));
+  $('admin-page-' + tab).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (tab === 'kayitlar') renderAdminKayitlar();
+  if (tab === 'kullanicilar') renderKullanicilar();
+  if (tab === 'rapor') renderAdminRapor();
+}
 
-    updateHeaderDate();
-    renderBugunOzet();
-    renderKayitlar();
-    renderRapor();
-  };
+// ══════════════════════════════════
+// KURYE — KAYIT EKLE
+// ══════════════════════════════════
+function kuryeKaydet() {
+  const tarih  = $v('k-tarih');
+  const nakit  = parseFloat($v('k-nakit')) || 0;
+  const pos    = parseFloat($v('k-pos'))   || 0;
+  const not    = $v('k-not').trim();
 
-  // ── TAB ──
-  function switchTab(tab) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    $('page-' + tab).classList.add('active');
-    event.target.classList.add('active');
-    if (tab === 'kayitlar') renderKayitlar();
-    if (tab === 'rapor') renderRapor();
-  }
+  if (!tarih) { showToast('Tarih seçiniz!', true); return; }
+  if (nakit === 0 && pos === 0) { showToast('En az bir tutar giriniz!', true); return; }
 
-  // ── KAYIT EKLE ──
-  function kayitEkle() {
-    const adi = $('kuryeAdi').value.trim();
-    const tarih = $('tarih').value;
-    const nakit = parseFloat($('nakit').value) || 0;
-    const pos = parseFloat($('pos').value) || 0;
-    const not = $('not').value.trim();
+  const records = getRecords();
+  records.unshift({
+    id: Date.now(),
+    userId: currentUser.id,
+    username: currentUser.username,
+    adSoyad: currentUser.adSoyad,
+    tarih,
+    nakit,
+    pos,
+    not,
+    toplam: nakit + pos
+  });
+  saveRecords(records);
 
-    if (!adi) { showToast('Kurye adı giriniz!'); $('kuryeAdi').focus(); return; }
-    if (!tarih) { showToast('Tarih seçiniz!'); return; }
-    if (nakit === 0 && pos === 0) { showToast('En az bir tutar giriniz!'); return; }
+  $('k-nakit').value = '';
+  $('k-pos').value = '';
+  $('k-not').value = '';
 
-    const kayitlar = getKayitlar();
-    kayitlar.unshift({
-      id: Date.now(),
-      adi,
-      tarih,
-      nakit,
-      pos,
-      not,
-      toplam: nakit + pos
-    });
-    saveKayitlar(kayitlar);
+  renderKuryeBugun();
+  showToast('Kayıt eklendi!');
+}
 
-    // Reset
-    $('nakit').value = '';
-    $('pos').value = '';
-    $('not').value = '';
+function renderKuryeBugun() {
+  if (!currentUser) return;
+  const bugun = todayStr();
+  const records = getRecords().filter(r => r.userId === currentUser.id && r.tarih === bugun);
+  const nakit = records.reduce((s, r) => s + r.nakit, 0);
+  const pos   = records.reduce((s, r) => s + r.pos,   0);
+  $('k-bugun-nakit').textContent  = fmt(nakit);
+  $('k-bugun-pos').textContent    = fmt(pos);
+  $('k-bugun-toplam').textContent = fmt(nakit + pos);
+}
 
-    renderBugunOzet();
-    showToast('Kayıt eklendi!');
-  }
+function renderKuryeGecmis() {
+  if (!currentUser) return;
+  const filtre = $v('k-filtre-tarih');
+  let records = getRecords().filter(r => r.userId === currentUser.id);
+  if (filtre) records = records.filter(r => r.tarih === filtre);
+  const el = $('kurye-gecmis-list');
+  el.innerHTML = records.length === 0
+    ? `<div class="empty"><div class="empty-icon">🏍️</div><div>Kayıt bulunamadı</div></div>`
+    : records.map(r => entryHtml(r, false)).join('');
+}
 
-  // ── BUGÜN ÖZETİ ──
-  function renderBugunOzet() {
-    const bugun = bugunStr();
-    const kayitlar = getKayitlar().filter(k => k.tarih === bugun);
-    const nakit = kayitlar.reduce((s, k) => s + k.nakit, 0);
-    const pos = kayitlar.reduce((s, k) => s + k.pos, 0);
-    $('bugunNakit').textContent = fmt(nakit);
-    $('bugunPos').textContent = fmt(pos);
-    $('bugunToplam').textContent = fmt(nakit + pos);
-  }
+// ══════════════════════════════════
+// ADMIN — KAYITLAR
+// ══════════════════════════════════
+function renderAdminKayitlar() {
+  const arama  = ($v('a-arama') || '').toLowerCase();
+  const filtre = $v('a-filtre-tarih');
+  let records = getRecords();
+  if (arama)  records = records.filter(r => r.adSoyad.toLowerCase().includes(arama) || r.username.toLowerCase().includes(arama));
+  if (filtre) records = records.filter(r => r.tarih === filtre);
+  const el = $('admin-kayit-list');
+  el.innerHTML = records.length === 0
+    ? `<div class="empty"><div class="empty-icon">📋</div><div>Kayıt bulunamadı</div></div>`
+    : records.map(r => entryHtml(r, true)).join('');
+}
 
-  // ── KAYITLAR ──
-  function renderKayitlar() {
-    const arama = ($('aramaInput').value || '').toLowerCase();
-    const filtreTarih = $('filtreTarih').value;
-    let kayitlar = getKayitlar();
+function adminSil(id) {
+  if (!confirm('Bu kaydı silmek istediğinize emin misiniz?')) return;
+  saveRecords(getRecords().filter(r => r.id !== id));
+  renderAdminKayitlar();
+  renderAdminRapor();
+  showToast('Kayıt silindi');
+}
 
-    if (arama) kayitlar = kayitlar.filter(k => k.adi.toLowerCase().includes(arama));
-    if (filtreTarih) kayitlar = kayitlar.filter(k => k.tarih === filtreTarih);
+// ══════════════════════════════════
+// ADMIN — RAPOR
+// ══════════════════════════════════
+function fillKuryeSelect() {
+  const sel = $('a-rapor-kurye');
+  const users = getUsers().filter(u => u.role === 'kurye');
+  sel.innerHTML = '<option value="">Tüm Kuryeler</option>' +
+    users.map(u => `<option value="${u.id}">${esc(u.adSoyad)} (${esc(u.username)})</option>`).join('');
+}
 
-    const liste = $('kayitListesi');
-    if (kayitlar.length === 0) {
-      liste.innerHTML = `<div class="empty"><div class="empty-icon">🏍️</div><div class="empty-text">Kayıt bulunamadı</div></div>`;
-      return;
-    }
+function setDefaultRaporDates() {
+  const bit = new Date();
+  const bas = new Date(); bas.setDate(bas.getDate() - 6);
+  $('a-rapor-bit').value = toDateStr(bit);
+  $('a-rapor-bas').value = toDateStr(bas);
+}
 
-    liste.innerHTML = kayitlar.map(k => `
-      <div class="entry-item">
-        <div class="entry-avatar">${k.adi.charAt(0).toUpperCase()}</div>
-        <div class="entry-info">
-          <div class="entry-name">${escHtml(k.adi)}</div>
-          <div class="entry-date">${formatTarih(k.tarih)}${k.not ? ' · ' + escHtml(k.not) : ''}</div>
-        </div>
-        <div class="entry-amounts">
-          <div class="tag nakit"><span class="tag-dot"></span>${fmt(k.nakit)}</div>
-          <div class="tag pos"><span class="tag-dot"></span>${fmt(k.pos)}</div>
-        </div>
-        <button class="btn btn-danger" onclick="silKayit(${k.id})" title="Sil">✕</button>
+function renderAdminRapor() {
+  const bas     = $v('a-rapor-bas');
+  const bit     = $v('a-rapor-bit');
+  const userId  = $v('a-rapor-kurye');
+  const el      = $('admin-rapor-icerik');
+  if (!bas || !bit) { el.innerHTML = ''; return; }
+
+  let records = getRecords().filter(r => r.tarih >= bas && r.tarih <= bit);
+  if (userId) records = records.filter(r => String(r.userId) === userId);
+
+  const topNakit = records.reduce((s, r) => s + r.nakit, 0);
+  const topPos   = records.reduce((s, r) => s + r.pos,   0);
+
+  // kurye bazlı
+  const map = {};
+  records.forEach(r => {
+    if (!map[r.userId]) map[r.userId] = { adSoyad: r.adSoyad, nakit: 0, pos: 0 };
+    map[r.userId].nakit += r.nakit;
+    map[r.userId].pos   += r.pos;
+  });
+  const sorted = Object.values(map).sort((a, b) => (b.nakit + b.pos) - (a.nakit + a.pos));
+
+  el.innerHTML = `
+    <div class="card">
+      <div class="card-title">${fmtTarih(bas)} – ${fmtTarih(bit)}</div>
+      <div class="report-grid">
+        <div class="report-card nakit"><div class="report-card-label">Toplam Nakit</div><div class="report-card-value">${fmt(topNakit)}</div></div>
+        <div class="report-card pos"><div class="report-card-label">Toplam POS</div><div class="report-card-value">${fmt(topPos)}</div></div>
+        <div class="report-card total"><div class="report-card-label">Genel Toplam · ${records.length} kayıt</div><div class="report-card-value">${fmt(topNakit + topPos)}</div></div>
       </div>
-    `).join('');
-  }
-
-  function silKayit(id) {
-    if (!confirm('Bu kaydı silmek istediğinize emin misiniz?')) return;
-    const kayitlar = getKayitlar().filter(k => k.id !== id);
-    saveKayitlar(kayitlar);
-    renderKayitlar();
-    renderBugunOzet();
-    showToast('Kayıt silindi');
-  }
-
-  // ── RAPOR ──
-  function renderRapor() {
-    const baslangic = $('raporBaslangic').value;
-    const bitis = $('raporBitis').value;
-    const container = $('raporIcerik');
-
-    if (!baslangic || !bitis) { container.innerHTML = ''; return; }
-
-    const kayitlar = getKayitlar().filter(k => k.tarih >= baslangic && k.tarih <= bitis);
-    const topNakit = kayitlar.reduce((s, k) => s + k.nakit, 0);
-    const topPos = kayitlar.reduce((s, k) => s + k.pos, 0);
-    const topToplam = topNakit + topPos;
-
-    // Kurye bazlı özet
-    const kuryelik = {};
-    kayitlar.forEach(k => {
-      if (!kuryelik[k.adi]) kuryelik[k.adi] = { nakit: 0, pos: 0 };
-      kuryelik[k.adi].nakit += k.nakit;
-      kuryelik[k.adi].pos += k.pos;
-    });
-
-    const sorted = Object.entries(kuryelik).sort((a, b) => (b[1].nakit + b[1].pos) - (a[1].nakit + a[1].pos));
-
-    container.innerHTML = `
-      <div class="card">
-        <div class="card-title">${formatTarih(baslangic)} – ${formatTarih(bitis)}</div>
-        <div class="report-grid">
-          <div class="report-card nakit">
-            <div class="report-card-label">Toplam Nakit</div>
-            <div class="report-card-value">${fmt(topNakit)}</div>
-          </div>
-          <div class="report-card pos">
-            <div class="report-card-label">Toplam POS</div>
-            <div class="report-card-value">${fmt(topPos)}</div>
-          </div>
-          <div class="report-card total">
-            <div class="report-card-label">Genel Toplam · ${kayitlar.length} kayıt</div>
-            <div class="report-card-value">${fmt(topToplam)}</div>
-          </div>
-        </div>
-      </div>
-
-      ${sorted.length > 0 ? `
+    </div>
+    ${sorted.length > 0 ? `
       <div class="section-heading">Kurye Bazlı</div>
-      ${sorted.map(([ad, v]) => `
+      ${sorted.map(v => `
         <div class="courier-row">
-          <div class="courier-row-name">${escHtml(ad)}</div>
+          <div>${esc(v.adSoyad)}</div>
           <div class="courier-row-amounts">
             <span class="tag nakit"><span class="tag-dot"></span>${fmt(v.nakit)}</span>
             <span class="tag pos"><span class="tag-dot"></span>${fmt(v.pos)}</span>
           </div>
         </div>
       `).join('')}
-      ` : `<div class="empty"><div class="empty-icon">📊</div><div class="empty-text">Bu dönemde kayıt yok</div></div>`}
-    `;
-  }
+    ` : `<div class="empty"><div class="empty-icon">📊</div><div>Bu dönemde kayıt yok</div></div>`}
+  `;
+}
 
-  // ── TOAST ──
-  function showToast(msg) {
-    const t = $('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2200);
-  }
+// ══════════════════════════════════
+// ADMIN — KULLANICI YÖNETİMİ
+// ══════════════════════════════════
+function renderKullanicilar() {
+  const users = getUsers();
+  const el = $('kullanici-list');
+  el.innerHTML = users.map(u => `
+    <div class="user-row">
+      <div class="user-row-info">
+        <div class="user-row-name">${esc(u.adSoyad)} <span class="role-badge ${u.role}">${u.role === 'admin' ? 'Yönetici' : 'Kurye'}</span></div>
+        <div class="user-row-meta">@${esc(u.username)}</div>
+      </div>
+      <div class="user-row-actions">
+        <button class="btn btn-success" onclick="openPassModal(${u.id})">Şifre</button>
+        ${u.username !== 'admin' ? `<button class="btn btn-danger" onclick="deleteUser(${u.id})">Sil</button>` : ''}
+      </div>
+    </div>
+  `).join('') || `<div class="empty"><div>Kullanıcı yok</div></div>`;
+}
 
-  function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
+let editUserId = null;
+function openUserModal() {
+  editUserId = null;
+  $('modal-title').textContent = 'Yeni Kullanıcı';
+  $('m-adSoyad').value = '';
+  $('m-username').value = '';
+  $('m-sifre').value = '';
+  $('m-rol').value = 'kurye';
+  $('modal-error').textContent = '';
+  $('user-modal').classList.add('open');
+}
+function closeUserModal() { $('user-modal').classList.remove('open'); }
+
+function saveUser() {
+  const adSoyad  = $v('m-adSoyad').trim();
+  const username = $v('m-username').trim().toLowerCase();
+  const sifre    = $v('m-sifre');
+  const rol      = $v('m-rol');
+
+  if (!adSoyad || !username || !sifre) { $('modal-error').textContent = 'Tüm alanları doldurun.'; return; }
+  if (sifre.length < 4) { $('modal-error').textContent = 'Şifre en az 4 karakter olmalı.'; return; }
+  if (!/^[a-z0-9_]+$/.test(username)) { $('modal-error').textContent = 'Kullanıcı adı sadece harf, rakam ve _ içerebilir.'; return; }
+
+  const users = getUsers();
+  if (users.find(u => u.username === username)) { $('modal-error').textContent = 'Bu kullanıcı adı zaten kullanılıyor.'; return; }
+
+  users.push({ id: Date.now(), adSoyad, username, password: sifre, role: rol });
+  saveUsers(users);
+  closeUserModal();
+  renderKullanicilar();
+  fillKuryeSelect();
+  showToast('Kullanıcı eklendi!');
+}
+
+function deleteUser(id) {
+  if (!confirm('Bu kullanıcıyı silmek istiyor musunuz? Kayıtları silinmez.')) return;
+  saveUsers(getUsers().filter(u => u.id !== id));
+  renderKullanicilar();
+  fillKuryeSelect();
+  showToast('Kullanıcı silindi');
+}
+
+// ── PASS MODAL ──
+let passTargetId = null;
+function openPassModal(id) {
+  passTargetId = id;
+  $('pm-sifre').value = '';
+  $('pass-modal-error').textContent = '';
+  $('pass-modal').classList.add('open');
+}
+function closePassModal() { $('pass-modal').classList.remove('open'); }
+function savePass() {
+  const sifre = $v('pm-sifre');
+  if (sifre.length < 4) { $('pass-modal-error').textContent = 'Şifre en az 4 karakter olmalı.'; return; }
+  const users = getUsers().map(u => u.id === passTargetId ? { ...u, password: sifre } : u);
+  saveUsers(users);
+  closePassModal();
+  showToast('Şifre güncellendi!');
+}
+
+// Modal dışı tıkla kapat
+$('user-modal').addEventListener('click', e => { if (e.target === $('user-modal')) closeUserModal(); });
+$('pass-modal').addEventListener('click', e => { if (e.target === $('pass-modal')) closePassModal(); });
+
+// ══════════════════════════════════
+// UTILS
+// ══════════════════════════════════
+function $(id) { return document.getElementById(id); }
+function $v(id) { return ($(id) || {}).value || ''; }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmt(n) { return Number(n||0).toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' ₺'; }
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+function toDateStr(d) { return d.toISOString().split('T')[0]; }
+function fmtTarih(d) { if (!d) return ''; const [y,m,g] = d.split('-'); return `${g}.${m}.${y}`; }
+
+function entryHtml(r, isAdmin) {
+  return `
+    <div class="entry-item">
+      <div class="entry-avatar">${esc(r.adSoyad).charAt(0).toUpperCase()}</div>
+      <div class="entry-info">
+        <div class="entry-name">${esc(r.adSoyad)}</div>
+        <div class="entry-date">${fmtTarih(r.tarih)}${r.not ? ' · ' + esc(r.not) : ''}</div>
+      </div>
+      <div class="entry-amounts">
+        <div class="tag nakit"><span class="tag-dot"></span>${fmt(r.nakit)}</div>
+        <div class="tag pos"><span class="tag-dot"></span>${fmt(r.pos)}</div>
+      </div>
+      ${isAdmin ? `<button class="btn btn-danger" onclick="adminSil(${r.id})">✕</button>` : ''}
+    </div>`;
+}
+
+function showToast(msg, isError = false) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = isError ? 'error show' : 'show';
+  setTimeout(() => t.className = '', 2200);
+}
+
+// ── BOOT ──
+ensureAdmin();
 </script>
 </body>
 </html>
