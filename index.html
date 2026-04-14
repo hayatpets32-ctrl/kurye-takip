@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#0f1117" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="KuryeTakip" />
+  <link rel="manifest" href="manifest.json" />
+  <title>KuryeTakip</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --surface: #13151c;
+      --surface2: #1c1f2b;
+      --border: #252837;
+      --accent: #f5a623;
+      --accent2: #3b82f6;
+      --pos: #22d3a5;
+      --nakit: #f5a623;
+      --text: #e8eaf0;
+      --muted: #6b7280;
+      --danger: #ef4444;
+      --radius: 14px;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100dvh;
+      overscroll-behavior: none;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(11,12,16,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 16px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 28px;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, var(--accent), #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo span {
+      -webkit-text-fill-color: var(--muted);
+      color: var(--muted);
+    }
+
+    .header-date {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* ── NAV TABS ── */
+    .tabs {
+      display: flex;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 90px;
+      padding: 12px 8px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* ── MAIN ── */
+    main { padding: 16px; max-width: 600px; margin: 0 auto; padding-bottom: 100px; }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    /* ── FORM ── */
+    .form-row { margin-bottom: 14px; }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      outline: none;
+      transition: border-color .2s;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus { border-color: var(--accent); }
+
+    .amount-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .amount-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      position: relative;
+      transition: border-color .2s;
+    }
+    .amount-box.nakit { border-color: rgba(245,166,35,.25); }
+    .amount-box.pos { border-color: rgba(34,211,165,.25); }
+    .amount-box label {
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+    .amount-box.nakit label { color: var(--nakit); }
+    .amount-box.pos label { color: var(--pos); }
+    .amount-box input {
+      background: transparent;
+      border: none;
+      padding: 0;
+      font-size: 20px;
+      font-weight: 600;
+      width: 100%;
+    }
+    .amount-box input:focus { border: none; }
+    .currency-tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    /* ── BUTTON ── */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      transition: transform .15s, opacity .15s;
+    }
+    .btn:active { transform: scale(.97); opacity: .85; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), #fbbf24); color: #0b0c10; }
+    .btn-danger { background: rgba(239,68,68,.15); color: var(--danger); border: 1px solid rgba(239,68,68,.3); font-family: var(--font-body); font-size: 13px; padding: 8px 12px; width: auto; }
+
+    /* ── SUMMARY CHIPS ── */
+    .summary-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .chip-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 6px; }
+    .chip-value { font-family: var(--font-display); font-size: 22px; letter-spacing: .5px; }
+    .chip.nakit .chip-value { color: var(--nakit); }
+    .chip.pos .chip-value { color: var(--pos); }
+    .chip.total .chip-value { color: var(--text); }
+
+    /* ── ENTRY LIST ── */
+    .entry-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .entry-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: fadeUp .3s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(8px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    .entry-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), #fbbf24);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: #0b0c10;
+      flex-shrink: 0;
+    }
+
+    .entry-info { flex: 1; min-width: 0; }
+    .entry-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .entry-date { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .entry-amounts { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+    .tag {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .tag.nakit { color: var(--nakit); }
+    .tag.pos { color: var(--pos); }
+    .tag-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .tag.nakit .tag-dot { background: var(--nakit); }
+    .tag.pos .tag-dot { background: var(--pos); }
+
+    /* ── EMPTY STATE ── */
+    .empty {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--muted);
+    }
+    .empty-icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-text { font-size: 15px; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .filter-bar input, .filter-bar select {
+      flex: 1;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--accent);
+      color: #0b0c10;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 14px;
+      z-index: 999;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+      opacity: 0;
+      white-space: nowrap;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ── BOTTOM SAFE ── */
+    .bottom-safe { height: env(safe-area-inset-bottom, 20px); }
+
+    /* ── REPORT ── */
+    .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .report-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .report-card-label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 8px; }
+    .report-card-value { font-family: var(--font-display); font-size: 28px; letter-spacing: .5px; }
+    .report-card.nakit .report-card-value { color: var(--nakit); }
+    .report-card.pos .report-card-value { color: var(--pos); }
+    .report-card.total { grid-column: 1/-1; }
+    .report-card.total .report-card-value { font-size: 36px; color: var(--text); }
+
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: 16px;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin: 20px 0 10px;
+      text-transform: uppercase;
+    }
+
+    /* ── COURIER TABLE ── */
+    .courier-row {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .courier-row-name { font-weight: 600; font-size: 14px; }
+    .courier-row-amounts { display: flex; gap: 16px; }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    /* PAGE VISIBILITY */
+    .page { display: none; }
+    .page.active { display: block; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Kurye<span>Takip</span></div>
+  <div class="header-date" id="headerDate"></div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('giris')">Giriş Yap</button>
+  <button class="tab-btn" onclick="switchTab('kayitlar')">Kayıtlar</button>
+  <button class="tab-btn" onclick="switchTab('rapor')">Rapor</button>
+</div>
+
+<main>
+
+  <!-- ── GİRİŞ SAYFASI ── -->
+  <div class="page active" id="page-giris">
+
+    <div class="card">
+      <div class="card-title">Günlük Tahsilat Girişi</div>
+
+      <div class="form-row">
+        <label>Kurye Adı</label>
+        <input type="text" id="kuryeAdi" placeholder="Ad Soyad" autocomplete="off" />
+      </div>
+
+      <div class="form-row">
+        <label>Tarih</label>
+        <input type="date" id="tarih" />
+      </div>
+
+      <div class="form-row">
+        <label>Tahsilat Tutarları</label>
+        <div class="amount-row">
+          <div class="amount-box nakit">
+            <label>Nakit</label>
+            <input type="number" id="nakit" placeholder="0" min="0" inputmode="decimal" />
+            <span class="currency-tag">₺</span>
+          </div>
+          <div class="amount-box pos">
+            <label>POS</label>
+            <input type="number" id="pos" placeholder="0" min="0" inputmode="decimal" />
+            <span class="currency-tag">₺</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Not (Opsiyonel)</label>
+        <input type="text" id="not" placeholder="Açıklama..." autocomplete="off" />
+      </div>
+
+      <button class="btn btn-primary" onclick="kayitEkle()">KAYDET</button>
+    </div>
+
+    <!-- Bugünün Özeti -->
+    <div class="card">
+      <div class="card-title">Bugünün Özeti</div>
+      <div class="summary-row" id="bugunOzet">
+        <div class="chip nakit">
+          <div class="chip-label">Nakit</div>
+          <div class="chip-value" id="bugunNakit">0 ₺</div>
+        </div>
+        <div class="chip pos">
+          <div class="chip-label">POS</div>
+          <div class="chip-value" id="bugunPos">0 ₺</div>
+        </div>
+        <div class="chip total">
+          <div class="chip-label">Toplam</div>
+          <div class="chip-value" id="bugunToplam">0 ₺</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── KAYITLAR SAYFASI ── -->
+  <div class="page" id="page-kayitlar">
+
+    <div class="filter-bar">
+      <input type="text" id="aramaInput" placeholder="Kurye ara..." oninput="renderKayitlar()" />
+      <input type="date" id="filtreTarih" onchange="renderKayitlar()" />
+    </div>
+
+    <div id="kayitListesi" class="entry-list"></div>
+
+  </div>
+
+  <!-- ── RAPOR SAYFASI ── -->
+  <div class="page" id="page-rapor">
+
+    <div class="card">
+      <div class="card-title">Dönem Seç</div>
+      <div class="filter-bar" style="margin-bottom:0">
+        <input type="date" id="raporBaslangic" />
+        <span style="color:var(--muted);font-size:13px;">—</span>
+        <input type="date" id="raporBitis" />
+        <button class="btn btn-primary" style="width:auto;padding:10px 18px;font-size:15px;" onclick="renderRapor()">Getir</button>
+      </div>
+    </div>
+
+    <div id="raporIcerik"></div>
+
+  </div>
+
+</main>
+
+<div id="toast"></div>
+<div class="bottom-safe"></div>
+
+<script>
+  // ── UTILS ──
+  const $ = id => document.getElementById(id);
+  const fmt = n => Number(n || 0).toLocaleString('tr-TR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' ₺';
+
+  // ── STORAGE ──
+  const STORE_KEY = 'kurye_kayitlar_v1';
+  function getKayitlar() {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch { return []; }
+  }
+  function saveKayitlar(list) {
+    localStorage.setItem(STORE_KEY, JSON.stringify(list));
+  }
+
+  // ── TARIH ──
+  function bugunStr() {
+    return new Date().toISOString().split('T')[0];
+  }
+  function formatTarih(d) {
+    if (!d) return '';
+    const [y, m, g] = d.split('-');
+    return `${g}.${m}.${y}`;
+  }
+
+  // ── HEADER ──
+  function updateHeaderDate() {
+    const now = new Date();
+    const options = { weekday: 'short', day: 'numeric', month: 'short' };
+    $('headerDate').innerHTML = now.toLocaleDateString('tr-TR', options);
+  }
+
+  // ── INIT ──
+  window.onload = () => {
+    $('tarih').value = bugunStr();
+    const today = bugunStr();
+    $('filtreTarih').value = today;
+    // Rapor default son 7 gün
+    const raporBitis = new Date();
+    const raporBaslangic = new Date();
+    raporBaslangic.setDate(raporBaslangic.getDate() - 6);
+    $('raporBitis').value = raporBitis.toISOString().split('T')[0];
+    $('raporBaslangic').value = raporBaslangic.toISOString().split('T')[0];
+
+    updateHeaderDate();
+    renderBugunOzet();
+    renderKayitlar();
+    renderRapor();
+  };
+
+  // ── TAB ──
+  function switchTab(tab) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    $('page-' + tab).classList.add('active');
+    event.target.classList.add('active');
+    if (tab === 'kayitlar') renderKayitlar();
+    if (tab === 'rapor') renderRapor();
+  }
+
+  // ── KAYIT EKLE ──
+  function kayitEkle() {
+    const adi = $('kuryeAdi').value.trim();
+    const tarih = $('tarih').value;
+    const nakit = parseFloat($('nakit').value) || 0;
+    const pos = parseFloat($('pos').value) || 0;
+    const not = $('not').value.trim();
+
+    if (!adi) { showToast('Kurye adı giriniz!'); $('kuryeAdi').focus(); return; }
+    if (!tarih) { showToast('Tarih seçiniz!'); return; }
+    if (nakit === 0 && pos === 0) { showToast('En az bir tutar giriniz!'); return; }
+
+    const kayitlar = getKayitlar();
+    kayitlar.unshift({
+      id: Date.now(),
+      adi,
+      tarih,
+      nakit,
+      pos,
+      not,
+      toplam: nakit + pos
+    });
+    saveKayitlar(kayitlar);
+
+    // Reset
+    $('nakit').value = '';
+    $('pos').value = '';
+    $('not').value = '';
+
+    renderBugunOzet();
+    showToast('Kayıt eklendi!');
+  }
+
+  // ── BUGÜN ÖZETİ ──
+  function renderBugunOzet() {
+    const bugun = bugunStr();
+    const kayitlar = getKayitlar().filter(k => k.tarih === bugun);
+    const nakit = kayitlar.reduce((s, k) => s + k.nakit, 0);
+    const pos = kayitlar.reduce((s, k) => s + k.pos, 0);
+    $('bugunNakit').textContent = fmt(nakit);
+    $('bugunPos').textContent = fmt(pos);
+    $('bugunToplam').textContent = fmt(nakit + pos);
+  }
+
+  // ── KAYITLAR ──
+  function renderKayitlar() {
+    const arama = ($('aramaInput').value || '').toLowerCase();
+    const filtreTarih = $('filtreTarih').value;
+    let kayitlar = getKayitlar();
+
+    if (arama) kayitlar = kayitlar.filter(k => k.adi.toLowerCase().includes(arama));
+    if (filtreTarih) kayitlar = kayitlar.filter(k => k.tarih === filtreTarih);
+
+    const liste = $('kayitListesi');
+    if (kayitlar.length === 0) {
+      liste.innerHTML = `<div class="empty"><div class="empty-icon">🏍️</div><div class="empty-text">Kayıt bulunamadı</div></div>`;
+      return;
+    }
+
+    liste.innerHTML = kayitlar.map(k => `
+      <div class="entry-item">
+        <div class="entry-avatar">${k.adi.charAt(0).toUpperCase()}</div>
+        <div class="entry-info">
+          <div class="entry-name">${escHtml(k.adi)}</div>
+          <div class="entry-date">${formatTarih(k.tarih)}${k.not ? ' · ' + escHtml(k.not) : ''}</div>
+        </div>
+        <div class="entry-amounts">
+          <div class="tag nakit"><span class="tag-dot"></span>${fmt(k.nakit)}</div>
+          <div class="tag pos"><span class="tag-dot"></span>${fmt(k.pos)}</div>
+        </div>
+        <button class="btn btn-danger" onclick="silKayit(${k.id})" title="Sil">✕</button>
+      </div>
+    `).join('');
+  }
+
+  function silKayit(id) {
+    if (!confirm('Bu kaydı silmek istediğinize emin misiniz?')) return;
+    const kayitlar = getKayitlar().filter(k => k.id !== id);
+    saveKayitlar(kayitlar);
+    renderKayitlar();
+    renderBugunOzet();
+    showToast('Kayıt silindi');
+  }
+
+  // ── RAPOR ──
+  function renderRapor() {
+    const baslangic = $('raporBaslangic').value;
+    const bitis = $('raporBitis').value;
+    const container = $('raporIcerik');
+
+    if (!baslangic || !bitis) { container.innerHTML = ''; return; }
+
+    const kayitlar = getKayitlar().filter(k => k.tarih >= baslangic && k.tarih <= bitis);
+    const topNakit = kayitlar.reduce((s, k) => s + k.nakit, 0);
+    const topPos = kayitlar.reduce((s, k) => s + k.pos, 0);
+    const topToplam = topNakit + topPos;
+
+    // Kurye bazlı özet
+    const kuryelik = {};
+    kayitlar.forEach(k => {
+      if (!kuryelik[k.adi]) kuryelik[k.adi] = { nakit: 0, pos: 0 };
+      kuryelik[k.adi].nakit += k.nakit;
+      kuryelik[k.adi].pos += k.pos;
+    });
+
+    const sorted = Object.entries(kuryelik).sort((a, b) => (b[1].nakit + b[1].pos) - (a[1].nakit + a[1].pos));
+
+    container.innerHTML = `
+      <div class="card">
+        <div class="card-title">${formatTarih(baslangic)} – ${formatTarih(bitis)}</div>
+        <div class="report-grid">
+          <div class="report-card nakit">
+            <div class="report-card-label">Toplam Nakit</div>
+            <div class="report-card-value">${fmt(topNakit)}</div>
+          </div>
+          <div class="report-card pos">
+            <div class="report-card-label">Toplam POS</div>
+            <div class="report-card-value">${fmt(topPos)}</div>
+          </div>
+          <div class="report-card total">
+            <div class="report-card-label">Genel Toplam · ${kayitlar.length} kayıt</div>
+            <div class="report-card-value">${fmt(topToplam)}</div>
+          </div>
+        </div>
+      </div>
+
+      ${sorted.length > 0 ? `
+      <div class="section-heading">Kurye Bazlı</div>
+      ${sorted.map(([ad, v]) => `
+        <div class="courier-row">
+          <div class="courier-row-name">${escHtml(ad)}</div>
+          <div class="courier-row-amounts">
+            <span class="tag nakit"><span class="tag-dot"></span>${fmt(v.nakit)}</span>
+            <span class="tag pos"><span class="tag-dot"></span>${fmt(v.pos)}</span>
+          </div>
+        </div>
+      `).join('')}
+      ` : `<div class="empty"><div class="empty-icon">📊</div><div class="empty-text">Bu dönemde kayıt yok</div></div>`}
+    `;
+  }
+
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+</script>
+</body>
+</html>
